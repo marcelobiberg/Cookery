@@ -1,0 +1,82 @@
+﻿@model CookeryApp.Models.IndexVM
+
+<div class="events">
+    <div class="container">
+        <!--top-->
+        <div class="events-top">
+            <div class="col-md-4 events-left animated wow fadeInLeft" data-wow-duration="1000ms" data-wow-delay="500ms">
+                <h3>Events</h3>
+                <label><i class="glyphicon glyphicon-menu-up"></i></label>
+                <span>There are many variations</span>
+            </div>
+            <div class="col-md-8 events-right animated wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="500ms">
+                <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour , or randomised words which don't look even slightly believable.There are many variations by injected humour. There are many variations of passages of Lorem Ipsum available.</p>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+        <hr />
+        <!--end top-->
+        <!--content-->
+        @foreach (var item in Model.Events)
+        {
+            if (Session["flag"].ToString() == "false")
+            {
+            <div class="events-bottom">
+                <div class="col-md-5 events-bottom1 animated wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="500ms">
+                    <a href="#"><img src="@item.ImageURL" alt="" class="img-responsive"></a>
+                </div>
+                <div class="col-md-7 events-bottom2 animated wow fadeInLeft" data-wow-duration="1000ms" data-wow-delay="500ms">
+                    <div class="text-center">
+                        <h3>@item.Title</h3>
+                        <label><i class="glyphicon glyphicon-menu-up"></i></label>
+                    </div>
+
+                    <p>
+                        @item.ShortDescription
+                    </p>
+
+                    <h3> @item.Price.ToString("c") </h3>
+                    <label><i class="glyphicon glyphicon-menu-down"></i></label>
+
+                    <div class="read-more">
+                        <a class="link link-yaku" href="@Url.Action("Purchase","Home", new { id = item.Id})">
+                            <span>C</span><span>O</span><span>M</span><span>P</span><span>R</span><span>A</span><span>R</span> <span>C</span><span>O</span><span>M</span> <span>P</span><span>A</span><span>Y</span><span>P</span><span>A</span><span>L</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+                Session["flag"] = "true";
+            }
+            else
+            {
+                <div class="events-bottom">
+                    <div class="col-md-7 events-bottom2 animated wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="500ms">
+                        <div class="text-center">
+                            <h3>@item.Title</h3>
+                            <label><i class="glyphicon glyphicon-menu-up"></i></label>
+                        </div>            <p>
+                            @item.ShortDescription
+                        </p>
+
+                        <h3>@item.Price.ToString("c")</h3>
+                        <label><i class="glyphicon glyphicon-menu-down"></i></label>
+
+                        <div class="read-more">
+                            <a class="link link-yaku" href="@Url.Action("Purchase","Home", new { id = item.Id})">
+                                <span>C</span><span>O</span><span>M</span><span>P</span><span>R</span><span>A</span><span>R</span> <span>C</span><span>O</span><span>M</span> <span>P</span><span>A</span><span>Y</span><span>P</span><span>A</span><span>L</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-5 events-bottom1 animated wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="500ms">
+                        <a href="single.html"><img src="@item.ImageURL" alt="" class="img-responsive"></a>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+                Session["flag"] = "false";
+            }
+
+        }
+        <!--end content-->
+    </div>
+</div>
