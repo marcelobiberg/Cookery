@@ -15,7 +15,7 @@ App didático, aprendendo a consumir API do Paypal para pagamento único (um ite
 # Demo da API Paypal
 
 ### Index
-![](https://media.giphy.com/media/jyuuPAWItd9Pn3qCiu/giphy.gif | width=100)
+<img src="https://media.giphy.com/media/jyuuPAWItd9Pn3qCiu/giphy.gif" alt="alt text" width="250" height="250">
 
 
 
