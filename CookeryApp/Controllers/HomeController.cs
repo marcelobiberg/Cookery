@@ -39,7 +39,7 @@ namespace CookeryApp.Controllers
         [HttpGet]
         public ActionResult Purchase(int? id)
         {
-            //recebe event, trocar 1 pela param id
+            //recebe event, trocar 1 pelo param id
             var ev = _db.Events.FirstOrDefault(m => m.Id == 1);
 
             var model = new PurchaseVM()
@@ -89,7 +89,7 @@ namespace CookeryApp.Controllers
                             amount = new Amount
                             {
                                 currency = "BRL",
-                                total = model.events.Price.ToString()
+                                total = ev.Price.ToString()
                             },
                             item_list = new ItemList()
                             {
@@ -97,10 +97,10 @@ namespace CookeryApp.Controllers
                                 {
                                     new Item
                                     {
-                                        description = $"Evento: {model.events.Title} Preço: {model.events.Price.ToString()}",
+                                        description = $"Evento: {ev.Title} Preço: {ev.Price.ToString("c")}",
                                         currency = "BRL",
                                         quantity = "1",
-                                        price = model.events.Price.ToString()
+                                        price = ev.Price.ToString()
                                     }
                                 }
                             }
@@ -129,7 +129,16 @@ namespace CookeryApp.Controllers
                 //envia tela para validar dados do user, e finalizar compra com o paypal
                 return Redirect(approvalUrl.href);
             }
-            return View();
+            else
+            {
+                var pvm = new PurchaseVM
+                {
+                    events = _db.Events.Find(model.events.Id)
+                };
+
+                return View(pvm);
+            }
+
         }
 
         public ActionResult Return(string payerId, string paymentId)
@@ -138,11 +147,7 @@ namespace CookeryApp.Controllers
             var ticket = _db.Tickets.FirstOrDefault(m => m.PaypalReference == paymentId);
             var ev = _db.Events.Find(ticket.Event_Id);
             //popula purchaseVM
-            var PVM = new PurchaseVM
-            {
-                events = ev,
-                ticket = ticket
-            };
+    
 
             //obtém Paypal api context
             var apiContext = GetAPIContext();
@@ -162,8 +167,13 @@ namespace CookeryApp.Controllers
             //exe pagamento
             var executedPayment = payment.Execute(apiContext, paymentExecution);
 
-            //envia email, DONE, envia email test!
+            //const com email do remetente, popula PVM com event e ticket para usar no email
             const string emailFrom = "cookeryappninja@gmail.com";
+            var PVM = new PurchaseVM
+            {
+                events = ev,
+                ticket = ticket
+            };
             Mail(ticket.Email, emailFrom, PVM);
 
             //direciona para view thank's , end of the line 
@@ -177,7 +187,7 @@ namespace CookeryApp.Controllers
             string sub = "Paypal API";
 
             //body do email escrito com html, concat indos da compra no meio do html, em <h4> com um pouco de css
-            body = " <html> <head> 	<style>  *{ 	margin:0; 	padding:0; } body {   font-family: 'Roboto', Helvetica, Arial, sans-serif;   font-weight: 100;   font-size: 12px;   line-height: 30px;   height: 400px;   color: #777;   background: blue; }  .container {  	position:absolute; 	top:0; 	left:0; 	z-index:11; 	background-color:#000; 	width:100%; 	height:100%;  }  #contact input[type='text'], #contact input[type='email'], #contact input[type='tel'], #contact input[type='url'], #contact textarea, #contact button[type='submit'] {   font: 400 12px/16px 'Roboto', Helvetica, Arial, sans-serif; }  #contact {   background: #F9F9F9;   padding: 25px;   margin:  0;   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24); }  #contact h3 {   display: block;   font-size: 30px;   font-weight: 300;   margin-bottom: 10px; }  #contact h4 {   margin: 5px 0 15px;   display: block;   font-size: 13px;   font-weight: 400; }  fieldset {   border: medium none !important;   margin: 0 0 10px;   min-width: 100%;   padding: 0;   width: 100%; }  #contact input[type='text'], #contact input[type='email'], #contact input[type='tel'], #contact input[type='url'], #contact textarea {   width: 100%;   border: 1px solid #ccc;   background: #FFF;   margin: 0 0 5px;   padding: 10px; }  #contact input[type='text']:hover, #contact input[type='email']:hover, #contact input[type='tel']:hover, #contact input[type='url']:hover, #contact textarea:hover {   -webkit-transition: border-color 0.3s ease-in-out;   -moz-transition: border-color 0.3s ease-in-out;   transition: border-color 0.3s ease-in-out;   border: 1px solid #aaa; }  #contact textarea {   height: 100px;   max-width: 100%;   resize: none; }  #contact button[type='submit'] {   cursor: pointer;   width: 100%;   border: none;   background: green;   color: #FFF;   margin: 0 0 5px;   padding: 10px;   font-size: 15px; }  #contact button[type='submit']:hover {   background: #43A047;   -webkit-transition: background 0.3s ease-in-out;   -moz-transition: background 0.3s ease-in-out;   transition: background-color 0.3s ease-in-out; }  #contact button[type='submit']:active {   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5); }  .copyright {   text-align: center; }  #contact input:focus, #contact textarea:focus {   outline: 0;   border: 1px solid #aaa; }  ::-webkit-input-placeholder {   color: #888; }  :-moz-placeholder {   color: #888; }  ::-moz-placeholder {   color: #888; }  :-ms-input-placeholder {   color: #888; } 	</style> </head> <body> 	<div class='container'>  	  <div id='contact'> 		<h3>Descrição da compra feita com Paypal</h3> 		<h4>API Paypal com ASP.NET MVC e EF 6, somente para uma compra!</h4> <h4>Referência do pagamento(PaypalReference): "+ PVM.ticket.PaypalReference + "</h4>	<h4>Nome: " + PVM.ticket.FName+" "+ PVM.ticket.LName + "</h4> <h4>E-mail: " + PVM.ticket.Email + "</h4> <h4>Preço: " + PVM.events.Price + "</h4>	<hr /> 		  		<p class='copyright'>Consumindo API Paypal, GitHub: <a href='https://colorlib.com' target='_blank' title='Colorlib'>Cookery Ninja</a></p> 	  </div> 	</div> </body> </html>";
+            body = " <html> <head> 	<style>  *{ margin:0; 	padding:0; } body {   font-family: 'Roboto', Helvetica, Arial, sans-serif;   font-weight: 100;   font-size: 12px;   line-height: 30px;   height: 400px;   color: #777;   background: blue; }  .container {  	position:absolute; 	top:0; 	left:0; 	z-index:11; 	background-color:#000; 	width:100%; 	height:100%;  }  #contact input[type='text'], #contact input[type='email'], #contact input[type='tel'], #contact input[type='url'], #contact textarea, #contact button[type='submit'] {   font: 400 12px/16px 'Roboto', Helvetica, Arial, sans-serif; }  #contact {   background: #F9F9F9;   padding: 25px;   margin:  0;   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24); }  #contact h3 {   display: block;   font-size: 30px;   font-weight: 300;   margin-bottom: 10px; }  #contact h4 {   margin: 5px 0 15px;   display: block;   font-size: 13px;   font-weight: 400; }  fieldset {   border: medium none !important;   margin: 0 0 10px;   min-width: 100%;   padding: 0;   width: 100%; }  #contact input[type='text'], #contact input[type='email'], #contact input[type='tel'], #contact input[type='url'], #contact textarea {   width: 100%;   border: 1px solid #ccc;   background: #FFF;   margin: 0 0 5px;   padding: 10px; }  #contact input[type='text']:hover, #contact input[type='email']:hover, #contact input[type='tel']:hover, #contact input[type='url']:hover, #contact textarea:hover {   -webkit-transition: border-color 0.3s ease-in-out;   -moz-transition: border-color 0.3s ease-in-out;   transition: border-color 0.3s ease-in-out;   border: 1px solid #aaa; }  #contact textarea {   height: 100px;   max-width: 100%;   resize: none; }  #contact button[type='submit'] {   cursor: pointer;   width: 100%;   border: none;   background: green;   color: #FFF;   margin: 0 0 5px;   padding: 10px;   font-size: 15px; }  #contact button[type='submit']:hover {   background: #43A047;   -webkit-transition: background 0.3s ease-in-out;   -moz-transition: background 0.3s ease-in-out;   transition: background-color 0.3s ease-in-out; }  #contact button[type='submit']:active {   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5); }  .copyright {   text-align: center; }  #contact input:focus, #contact textarea:focus {   outline: 0;   border: 1px solid #aaa; }  ::-webkit-input-placeholder {   color: #888; }  :-moz-placeholder {   color: #888; }  ::-moz-placeholder {   color: #888; }  :-ms-input-placeholder {   color: #888; } 	</style> </head> <body> 	<div class='container'>  	  <div id='contact'> 		<h3>Descrição da compra feita com Paypal</h3> 		<h4>API Paypal com ASP.NET MVC e EF 6, somente para uma compra!</h4> <h4>Referência do pagamento(PaypalReference): "+ PVM.ticket.PaypalReference + "</h4>	<h4>Nome: " + PVM.ticket.FName+" "+ PVM.ticket.LName + "</h4> <h4>E-mail: " + PVM.ticket.Email + "</h4> <h4>Preço: " + PVM.events.Price + "</h4>	<hr /> 		  		<p class='copyright'>Consumindo API Paypal, GitHub: <a href='https://colorlib.com' target='_blank' title='Colorlib'>Cookery Ninja</a></p> 	  </div> 	</div> </body> </html>";
 
             //Instância classe email
             MailMessage mail = new MailMessage();
@@ -225,5 +235,15 @@ namespace CookeryApp.Controllers
 
             return apicontext;
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
     }
 }

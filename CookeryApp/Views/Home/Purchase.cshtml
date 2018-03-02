@@ -14,27 +14,25 @@
                             <div class="leave col-md-6">
                                 @using (Html.BeginForm("Purchase", "Home"))
                                 {
-                                    <h3>Compre agora o evento: @Html.DisplayFor(m => m.events.Title) por apenas @Html.DisplayFor(m => m.events.Price).</h3>
+                            <h3>Compre agora o evento: @Html.DisplayFor(m => m.events.Title) por apenas @Html.DisplayFor(m => m.events.Price).</h3>
 
-                                    @Html.HiddenFor(m => m.events.Id)
-                                    @Html.AntiForgeryToken()
+                            @Html.HiddenFor(m => m.events.Id)
+                            @Html.AntiForgeryToken()
 
-                                    <div class="single-grid wow fadeInLeft animated" data-wow-delay=".5s">
+                            <div class="single-grid wow fadeInLeft animated" data-wow-delay=".5s">
 
-                                        @Html.EditorFor(m => m.ticket.FName, new { htmlattributes = new { @class = "", @type = "text", value = "Name", onfocus = "this.value='';", @onblur = "if (this.value == '') {this.value = 'Name';}", placeholder = "Primeiro nome" } })
-                                        @Html.ValidationMessageFor(m => m.ticket.FName, null, new { htmlattributes = new { @class = "text-danger" } })
+                                @Html.EditorFor(m => m.ticket.FName, new { htmlattributes = new { @class = "", @type = "text", value = "Name", onfocus = "this.value='';", @onblur = "if (this.value == '') {this.value = 'Name';}", placeholder = "Primeiro nome" } })
 
-                                        @Html.EditorFor(m => m.ticket.LName, new { htmlattributes = new { @class = "", @type = "text", value = "Name", onfocus = "this.value='';", @onblur = "if (this.value == '') {this.value = 'Name';}", placeholder = "Segundo nome" } })
-                                        @Html.ValidationMessageFor(m => m.ticket.LName, null, new { htmlattributes = new { @class = "text-danger" } })
+                                @Html.EditorFor(m => m.ticket.LName, new { htmlattributes = new { @class = "", @type = "text", value = "Name", onfocus = "this.value='';", @onblur = "if (this.value == '') {this.value = 'Name';}", placeholder = "Segundo nome" } })
 
-                                        @Html.EditorFor(m => m.ticket.Email, new { htmlattributes = new { @class = "", @type = "text", value = "Name", onfocus = "this.value='';", @onblur = "if (this.value == '') {this.value = 'Name';}", placeholder = "E-mail" } })
-                                        @Html.ValidationMessageFor(m => m.ticket.Email, null, new { htmlattributes = new { @class = "text-danger" } })
+                                @Html.EditorFor(m => m.ticket.Email, new { htmlattributes = new { @class = "", @type = "text", value = "Name", onfocus = "this.value='';", @onblur = "if (this.value == '') {this.value = 'Name';}", placeholder = "E-mail" } })
 
-                                        <label class="hvr-rectangle-out">
-                                            <input class="btn-block" type="submit" value="COMPRAR">
-                                        </label>
-                                    </div>
-                                }
+                                <label class="hvr-rectangle-out">
+                                    <input class="btn-block" type="submit" value="COMPRAR">
+                                </label>
+                            </div>
+                                <h4 style="color:darkred;"> @Html.ValidationMessageFor(m => m.ticket.Email, null)</h4>
+                                } 
                             </div>
                             <hr />
                         </div>
