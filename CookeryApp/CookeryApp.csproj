@@ -203,10 +203,6 @@
     <Compile Include="Migrations\201802271956001_ChangedEntityTicket1.Designer.cs">
       <DependentUpon>201802271956001_ChangedEntityTicket1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201803021704505_AddedClassDiagram.cs" />
-    <Compile Include="Migrations\201803021704505_AddedClassDiagram.Designer.cs">
-      <DependentUpon>201803021704505_AddedClassDiagram.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppContextDB.cs" />
     <Compile Include="Models\IndexVM.cs" />
@@ -304,12 +300,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="Diagram\ClassDiagram1.cd" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Purchase.cshtml" />
     <Content Include="Views\Home\ThankY.cshtml" />
     <Content Include="Views\WebExperience\Index.cshtml" />
     <Content Include="Views\Home\Cancel.cshtml" />
+    <None Include="Properties\PublishProfiles\cookeryapp - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\cookeryapp - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201802231853286_InitialMigration.resx">
@@ -344,9 +341,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802271956001_ChangedEntityTicket1.resx">
       <DependentUpon>201802271956001_ChangedEntityTicket1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803021704505_AddedClassDiagram.resx">
-      <DependentUpon>201803021704505_AddedClassDiagram.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

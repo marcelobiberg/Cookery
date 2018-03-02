@@ -8,30 +8,28 @@
                 <div class="single-top">
                     <div class="form-group">
                         <div class="row clearfix">
-                            <hr />
                             <div class="col-md-6">
                                 <img class="img-responsive wow fadeInUp animated" data-wow-delay=".5s" src="@Model.events.ImageURL" alt="" />
                             </div>
                             <div class="leave col-md-6">
                                 @using (Html.BeginForm("Purchase", "Home"))
                                 {
-                                    <h3>Compre agora o evento: @Model.events.Title por apenas @Model.events.Price.ToString("c").</h3>
+                                    <h3>Compre agora o evento: @Html.DisplayFor(m => m.events.Title) por apenas @Html.DisplayFor(m => m.events.Price).</h3>
 
                                     @Html.HiddenFor(m => m.events.Id)
-                                    @Html.HiddenFor(m => m.events.Price)
                                     @Html.AntiForgeryToken()
+
                                     <div class="single-grid wow fadeInLeft animated" data-wow-delay=".5s">
 
-                                        @*<input type="text" value="Name" onfocus="this.value='';" onblur="if (this.value == '') {this.value = 'Name';}">*@
                                         @Html.EditorFor(m => m.ticket.FName, new { htmlattributes = new { @class = "", @type = "text", value = "Name", onfocus = "this.value='';", @onblur = "if (this.value == '') {this.value = 'Name';}", placeholder = "Primeiro nome" } })
+                                        @Html.ValidationMessageFor(m => m.ticket.FName, null, new { htmlattributes = new { @class = "text-danger" } })
 
-                                        @*<input type="text" value="E-mail" onfocus="this.value='';" onblur="if (this.value == '') {this.value = 'E-mail';}">*@
                                         @Html.EditorFor(m => m.ticket.LName, new { htmlattributes = new { @class = "", @type = "text", value = "Name", onfocus = "this.value='';", @onblur = "if (this.value == '') {this.value = 'Name';}", placeholder = "Segundo nome" } })
+                                        @Html.ValidationMessageFor(m => m.ticket.LName, null, new { htmlattributes = new { @class = "text-danger" } })
 
-                                        @*<input type="text" value="Web site" onfocus="this.value='';" onblur="if (this.value == '') {this.value = 'Web site';}">*@
                                         @Html.EditorFor(m => m.ticket.Email, new { htmlattributes = new { @class = "", @type = "text", value = "Name", onfocus = "this.value='';", @onblur = "if (this.value == '') {this.value = 'Name';}", placeholder = "E-mail" } })
+                                        @Html.ValidationMessageFor(m => m.ticket.Email, null, new { htmlattributes = new { @class = "text-danger" } })
 
-                                        @*<textarea value=" " onfocus="this.value='';" onblur="if (this.value == '') {this.value = 'Comment';}">Comment</textarea>*@
                                         <label class="hvr-rectangle-out">
                                             <input class="btn-block" type="submit" value="COMPRAR">
                                         </label>
@@ -42,14 +40,14 @@
                         </div>
                     </div>                  
                     <div class="lone-line">
-                        <h4>@Model.events.Title</h4>
+                        <h4>@Html.DisplayFor(m => m.events.Title)</h4>
                         <ul class="grid-blog">
                             <li><span><i class="glyphicon glyphicon-time"> </i>08.09.2014</span></li>
                             <li><a href="#"><i class="glyphicon glyphicon-comment"> </i>5 Comment</a></li>
                             <li><a href="#"><i class="glyphicon glyphicon-share"> </i>Share</a></li>
                         </ul>
                         <p class="wow fadeInLeft animated" data-wow-delay=".5s">
-                            @Model.events.LongDescription
+                            @Html.DisplayFor(m => m.events.LongDescription)
                         </p>
                     </div>
                 </div>

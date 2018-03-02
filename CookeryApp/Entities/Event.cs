@@ -23,7 +23,7 @@ namespace CookeryApp.Entities
         [DataType(DataType.Text)]
         public string ImageURL { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:C0}")]
+        [DataType(DataType.Currency)]
         public int Price { get; set; }
 
         //property navigation
