@@ -6,7 +6,7 @@ App didático, aprendendo a consumir API do Paypal para pagamento único
 
 **Front-End:** [The Cookery template](https://w3layouts.com/cookery-food-category-flat-bootstrap-responsive-web-template//)
 
-[link](http://ec2-100-25-227-219.compute-1.amazonaws.com/){:target="_blank"}
+[link](http://ec2-100-25-227-219.compute-1.amazonaws.com/)
 
 # Demo da API Paypal
 
